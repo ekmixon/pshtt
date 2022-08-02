@@ -24,9 +24,7 @@ def mkdir_p(path):
     try:
         os.makedirs(path)
     except OSError as exc:  # Python >2.5
-        if exc.errno == errno.EEXIST:
-            pass
-        else:
+        if exc.errno != errno.EEXIST:
             raise
 
 
@@ -40,10 +38,7 @@ def write(content, destination, binary=False):
     if parent != "":
         mkdir_p(parent)
 
-    if binary:
-        f = open(destination, 'bw')
-    else:
-        f = open(destination, 'w')  # no utf-8 in python 2
+    f = open(destination, 'bw') if binary else open(destination, 'w')
     f.write(content)
     f.close()
 
@@ -77,22 +72,12 @@ def load_domains(domain_csv):
 
 # Configure logging level, so logging.debug can hinge on --debug.
 def configure_logging(debug=False):
-    if debug:
-        log_level = logging.DEBUG
-    else:
-        log_level = logging.WARNING
-
+    log_level = logging.DEBUG if debug else logging.WARNING
     logging.basicConfig(format='%(message)s', level=log_level)
 
 
 def format_domains(domains):
-    formatted_domains = []
-
-    for domain in domains:
-        # Replace a single instance of http://, https://, and www. if present.
-        formatted_domains.append(re.sub(r"^(https?://)?(www\.)?", "", domain))
-
-    return formatted_domains
+    return [re.sub(r"^(https?://)?(www\.)?", "", domain) for domain in domains]
 
 
 def debug(message, divider=False):
@@ -110,11 +95,7 @@ def smart_open(filename=None):
 
     Adapted from: https://stackoverflow.com/a/17603000
     """
-    if filename is None:
-        fh = sys.stdout
-    else:
-        fh = open(filename, 'w')
-
+    fh = sys.stdout if filename is None else open(filename, 'w')
     try:
         yield fh
     finally:

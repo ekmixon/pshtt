@@ -16,18 +16,6 @@ def inspect(base_domain):
 
     return domain
 
-    # Analyze HTTP endpoint responsiveness and behavior.
-    basic_check(domain.http)
-    basic_check(domain.httpwww)
-    basic_check(domain.https)
-    basic_check(domain.httpswww)
-
-    # Analyze HSTS header, if present, on each HTTPS endpoint.
-    hsts_check(domain.https)
-    hsts_check(domain.httpswww)
-
-    return domain
-
 
 @unittest.skip('Disable live tests against badssl for now')
 class TestCertificate(unittest.TestCase):

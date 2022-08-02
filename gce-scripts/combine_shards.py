@@ -14,8 +14,7 @@ def main():
 
     # Read in the filenames that are the different shards.
     with open(master_file, 'r') as input_file:
-        for line in input_file:
-            filenames.append(line.rstrip())
+        filenames.extend(line.rstrip() for line in input_file)
     # For each shard, read it in and append to the final list to
     # print out.
     for f in filenames:

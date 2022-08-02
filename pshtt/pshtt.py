@@ -182,9 +182,15 @@ def result_for(domain):
         if header in ("HSTS Header", "HSTS Max Age", "Redirect To"):
             continue
 
-        if not result['HTTPS Full Connection']:
-            if header in ('HSTS', 'HSTS Header', 'HSTS Max Age', 'HSTS Entire Domain', 'HSTS Preload Ready', 'Domain Uses Strong HSTS'):
-                continue
+        if not result['HTTPS Full Connection'] and header in (
+            'HSTS',
+            'HSTS Header',
+            'HSTS Max Age',
+            'HSTS Entire Domain',
+            'HSTS Preload Ready',
+            'Domain Uses Strong HSTS',
+        ):
+            continue
 
         if header in ('IP', 'Server Header', 'Server Version', 'HTTPS Cert Chain Length') and result[header] is None:
             continue

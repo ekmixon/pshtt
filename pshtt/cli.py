@@ -38,7 +38,7 @@ import pytablewriter
 
 
 def to_csv(results, out_filename):
-    utils.debug("Opening CSV file: {}".format(out_filename))
+    utils.debug(f"Opening CSV file: {out_filename}")
     with smart_open(out_filename) as out_file:
         writer = csv.writer(out_file)
 
@@ -69,9 +69,10 @@ def to_json(results, out_filename):
 def to_markdown(results, out_filename):
     # Generate (yield) all the results before exporting to Markdown
     table = [
-        [" %s" % result[header] for header in pshtt.HEADERS]
+        [f" {result[header]}" for header in pshtt.HEADERS]
         for result in results
     ]
+
 
     utils.debug("Printing Markdown...", divider=True)
     with smart_open(out_filename) as out_file:
